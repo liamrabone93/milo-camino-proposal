@@ -99,6 +99,21 @@ h1 .hl{color:var(--rust-lt)}
 .assure p{font-size:.86rem;color:var(--muted);line-height:1.65}
 .assure strong{color:var(--paper);font-weight:600}
 
+/* MARKETING COMPARISON */
+.cmp-wrap{border:1px solid var(--panel-line);border-radius:14px;overflow:hidden;background:var(--navy-2)}
+.cmp-scroll{overflow-x:auto}
+.cmp-table{width:100%;border-collapse:collapse;font-size:.84rem;min-width:560px}
+.cmp-table thead th{padding:14px 18px;text-align:left;font-size:.64rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--panel-line)}
+.cmp-table thead th.mc{color:var(--rust-lt);background:rgba(173,75,38,.1)}
+.cmp-table td{padding:13px 18px;border-bottom:1px solid rgba(236,224,208,.07);color:var(--muted);vertical-align:top;line-height:1.5}
+.cmp-table td.cap{font-weight:600;color:var(--paper)}
+.cmp-table td.cap span{display:block;font-weight:400;color:var(--dim);font-size:.77rem;margin-top:3px}
+.cmp-table td.mc{background:rgba(173,75,38,.06);color:var(--cream)}
+.cmp-table tr:last-child td{border-bottom:none}
+.yes{color:#8fa06b;font-weight:700;margin-right:7px}
+.no{color:var(--dim);font-weight:700;margin-right:7px}
+.cmp-note{font-size:.72rem;color:var(--dim);margin-top:14px;line-height:1.6}
+
 /* DEMO */
 #demo{padding:0 0 76px}
 .demo-head{max-width:900px;margin:0 auto;padding:76px 60px 34px;text-align:center}
@@ -318,6 +333,60 @@ h1 .hl{color:var(--rust-lt)}
     <span class="a-mark">✓</span>
     <div><strong>For the FD:</strong> Milo connects read-only. Nothing is written back to your systems, nothing breaks, and nothing changes in your source data. It reads, it never edits.</div>
   </div>
+</div>
+
+<!-- MARKETING DATA COMPARISON -->
+<div class="section reveal" style="padding-top:0">
+  <div class="sec-label">Marketing Data</div>
+  <div class="sec-title display">Is the marketing actually working?</div>
+  <div class="sec-sub">Reviews tell you whether customers are happy. They don't tell you whether the marketing is working. That answer needs ad spend, tied to the covers and revenue it drove, and it is where Milo pulls clear of a reviews-and-sales tool.</div>
+  <div class="cmp-wrap"><div class="cmp-scroll">
+    <table class="cmp-table">
+      <thead><tr>
+        <th style="width:46%">Marketing data source</th>
+        <th style="width:27%">Tenzo</th>
+        <th class="mc" style="width:27%">Milo</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="cap">Star ratings &amp; review text<span>Facebook, Google, TripAdvisor, Yelp</span></td>
+          <td><span class="yes">✓</span>Yes</td>
+          <td class="mc"><span class="yes">✓</span>Yes, via any review API</td>
+        </tr>
+        <tr>
+          <td class="cap">Meta Ads Manager<span>Instagram + Facebook spend, CPA, ROAS</span></td>
+          <td><span class="no">✗</span>Not connected</td>
+          <td class="mc"><span class="yes">✓</span>Connected</td>
+        </tr>
+        <tr>
+          <td class="cap">Google Ads<span>Search and display spend, conversions</span></td>
+          <td><span class="no">✗</span>Not connected</td>
+          <td class="mc"><span class="yes">✓</span>Connected</td>
+        </tr>
+        <tr>
+          <td class="cap">TikTok Ads<span>Spend, reach, conversions</span></td>
+          <td><span class="no">✗</span>Not connected</td>
+          <td class="mc"><span class="yes">✓</span>Connected</td>
+        </tr>
+        <tr>
+          <td class="cap">Google Analytics (GA4)<span>Traffic, referrals, demographics</span></td>
+          <td><span class="no">✗</span>Not connected</td>
+          <td class="mc"><span class="yes">✓</span>Connected</td>
+        </tr>
+        <tr>
+          <td class="cap">Mailchimp / Klaviyo<span>Email campaigns, open rates, revenue</span></td>
+          <td><span class="no">✗</span>Not connected</td>
+          <td class="mc"><span class="yes">✓</span>Connected</td>
+        </tr>
+        <tr>
+          <td class="cap">Join spend to POS revenue<span>Actual ROI per campaign</span></td>
+          <td><span class="no">✗</span>Impossible, no spend data</td>
+          <td class="mc"><span class="yes">✓</span>Native: ad spend, covers and revenue in one query</td>
+        </tr>
+      </tbody>
+    </table>
+  </div></div>
+  <p class="cmp-note">Comparison based on Tenzo's publicly documented integrations, as of July 2026.</p>
 </div>
 
 <!-- DEMO -->
