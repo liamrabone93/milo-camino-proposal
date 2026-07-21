@@ -85,14 +85,19 @@ h1 .hl{color:var(--rust-lt)}
 .feat-card h4{font-size:1rem;font-weight:600;margin-bottom:8px;color:var(--paper)}
 .feat-card p{font-size:.85rem;color:var(--muted);line-height:1.7}
 
-/* QUERY GROUPS */
-.qgroup{display:grid;gap:16px}
-.qcat{background:rgba(70,71,53,.22);border:1px solid var(--panel-line);border-radius:14px;padding:24px 26px}
-.qcat-head{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;flex-wrap:wrap}
-.qcat-head h4{font-size:1.02rem;font-weight:600;color:var(--paper)}
-.qcat-head span{font-size:.72rem;color:var(--tan);font-weight:500}
-.ask-list{border-left:2px solid rgba(173,75,38,.5);padding-left:20px;display:flex;flex-direction:column;gap:11px}
-.ask-list p{font-size:.96rem;font-weight:400;color:var(--cream);line-height:1.5;font-style:italic}
+/* DEPARTMENTS */
+.dept-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.dept-card{background:var(--panel);border:1px solid var(--panel-line);border-radius:14px;padding:22px 22px;transition:transform .2s,border-color .2s}
+.dept-card:hover{transform:translateY(-3px);border-color:rgba(173,75,38,.4)}
+.dept-card h4{font-size:.98rem;font-weight:600;color:var(--paper);margin-bottom:12px;display:flex;align-items:center;gap:9px}
+.dept-card h4::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--rust);flex-shrink:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:13px}
+.chip{background:rgba(236,224,208,.06);border:1px solid var(--panel-line);border-radius:999px;padding:3px 10px;font-size:.69rem;color:var(--muted);font-weight:500}
+.dept-q{font-size:.82rem;color:var(--cream);line-height:1.55;border-left:2px solid rgba(173,75,38,.5);padding-left:12px}
+.assure{display:flex;gap:14px;align-items:flex-start;margin-top:20px;background:linear-gradient(135deg,rgba(127,168,122,.13),rgba(70,71,53,.14));border:1px solid rgba(127,168,122,.32);border-radius:12px;padding:18px 22px}
+.assure .a-mark{width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;background:rgba(127,168,122,.2);color:#8fa06b;border:1px solid rgba(127,168,122,.55);margin-top:1px}
+.assure p{font-size:.86rem;color:var(--muted);line-height:1.65}
+.assure strong{color:var(--paper);font-weight:600}
 
 /* DEMO */
 #demo{padding:0 0 76px}
@@ -198,7 +203,7 @@ h1 .hl{color:var(--rust-lt)}
   #hero{padding:36px 24px 56px;min-height:auto}
   .section,.demo-inner,.demo-head,#cta{padding-left:24px;padding-right:24px}
   .lockup{flex-direction:column;align-items:flex-start;gap:16px;padding-bottom:40px}
-  .feat-grid,.delivery,.ns-grid,.cert-grid,.steps{grid-template-columns:1fr}
+  .feat-grid,.delivery,.ns-grid,.cert-grid,.steps,.dept-grid{grid-template-columns:1fr}
   .cert-grid .cert:nth-child(2){border-top:1px solid rgba(236,224,208,.1)}
   h1{font-size:2.2rem}
 }
@@ -219,7 +224,7 @@ h1 .hl{color:var(--rust-lt)}
   </div>
   <div class="hero-content">
     <h1 class="display" id="h1"></h1>
-    <p class="hero-sub">A proposal for Camino: one platform that ties marketing spend to revenue, watches cost and margin, and answers in plain English across all four sites. Built to grow with you.</p>
+    <p class="hero-sub">A proposal for Camino: one platform for the whole company, not a tool for one team. The same plain-English question box for everyone, giving different answers to different people, across all four sites. Built to grow with you.</p>
   </div>
 </section>
 
@@ -233,14 +238,15 @@ h1 .hl{color:var(--rust-lt)}
   <div class="lead-panel">
     <p>Right now the answers Camino needs live in different tools. Marketing sits in Meta, Instagram, TikTok and YouTube. Trading and labour sit in EPOS. Costs sit with suppliers and in finance. Pulling them together to answer a simple question means exports, spreadsheets and a wait.</p>
     <p><strong>Milo brings all of it into one plain-English view.</strong> Ask a question the way you'd ask a colleague and get the number back in seconds, with marketing spend read against the covers and revenue it drove, and cost and margin watched across every site.</p>
+    <p><strong>This is one tool for the whole company, not one bolted to a single team.</strong> The same question box serves finance, marketing, operations, GMs and owners, giving each of them the answer that matters to their role.</p>
   </div>
 </div>
 
 <!-- WHAT MILO DELIVERS -->
 <div class="section reveal" style="padding-top:0">
   <div class="sec-label">What Milo Delivers</div>
-  <div class="sec-title display">Built for the whole business, not one team.</div>
-  <div class="sec-sub">The capabilities that matter to a finance director: marketing proven in revenue, costs watched, and one place to ask across all of it.</div>
+  <div class="sec-title display">Built for the whole company, not one team.</div>
+  <div class="sec-sub">The capabilities that matter to a finance director: marketing proven in revenue, costs watched, and one platform the whole company asks, rather than another tool for a single department.</div>
   <div class="feat-grid">
     <div class="feat-card"><div class="feat-num">Plain English</div><h4>Ask it like you'd ask a colleague</h4><p>Milo works the way Claude and ChatGPT do. You type a question and get an answer back, with no dashboards to learn and no SQL. Anyone on the team can use it from day one.</p></div>
     <div class="feat-card"><div class="feat-num">Marketing to revenue</div><h4>Every campaign, tied to what it made</h4><p>Not likes and reach. Milo joins paid social and email spend to the covers and revenue it drove, by campaign and by site, so marketing and finance are finally looking at the same number.</p></div>
@@ -251,42 +257,66 @@ h1 .hl{color:var(--rust-lt)}
   </div>
 </div>
 
-<!-- EXAMPLE QUERIES -->
+<!-- ACROSS EVERY DEPARTMENT -->
 <div class="section reveal" style="padding-top:0">
-  <div class="sec-label">One Question Away</div>
-  <div class="sec-title display">The questions Camino could ask on day one.</div>
-  <div class="sec-sub">Real examples across the business. The same plain-English box, whether it is a marketing spend question, a supplier one, or a margin one.</div>
-  <div class="qgroup">
-    <div class="qcat">
-      <div class="qcat-head"><h4>Marketing &amp; revenue</h4><span>what the spend actually returned</span></div>
-      <div class="ask-list">
-        <p>"What did we spend on Instagram and TikTok ads last month by site, and what revenue can we actually tie back to it?"</p>
-        <p>"Show me covers and revenue from the Instagram promo code against the ad spend that drove it."</p>
-        <p>"Which is giving us better return per site, TikTok or Instagram?"</p>
-        <p>"Did the flamenco night TikTok push actually move covers at Shoreditch versus Farringdon, or would we have got them anyway?"</p>
-        <p>"What's our blended acquisition cost from paid social versus our email list?"</p>
-      </div>
+  <div class="sec-label">Across Every Department</div>
+  <div class="sec-title display">Not a department tool. A company tool.</div>
+  <div class="sec-sub">Same platform, same question box, different answers for different people. Milo connects to the systems each team already uses and speaks to all of them at once, from the FD closing month end to a GM checking last night's covers on WhatsApp.</div>
+  <div class="dept-grid">
+    <div class="dept-card">
+      <h4>Finance / FD</h4>
+      <div class="chips"><span class="chip">Xero</span><span class="chip">QuickBooks</span><span class="chip">Sage</span><span class="chip">Bank feeds</span><span class="chip">Google Sheets</span></div>
+      <p class="dept-q">P&amp;L by site, supplier cost trends, margin drift, cash flow and month-end reconciliation.</p>
     </div>
-    <div class="qcat">
-      <div class="qcat-head"><h4>Supply chain &amp; cost</h4><span>where the money quietly leaks</span></div>
-      <div class="ask-list">
-        <p>"Which supplier has put prices up the most on our top 10 ingredients this quarter?"</p>
-        <p>"What's food waste as a percentage of purchases by site this month, and which dishes are driving it?"</p>
-        <p>"Where's the gap between contracted supplier price and what we've actually been invoiced?"</p>
-        <p>"Which sites are over-ordering against covers forecast?"</p>
-        <p>"Show me COGS trending week by week by site. Who's slipping back above 25%?"</p>
-      </div>
+    <div class="dept-card">
+      <h4>Marketing</h4>
+      <div class="chips"><span class="chip">Meta Ads</span><span class="chip">Google Ads</span><span class="chip">TikTok</span><span class="chip">Mailchimp</span><span class="chip">Klaviyo</span><span class="chip">GA4</span></div>
+      <p class="dept-q">Campaign ROI, cost per cover, and which channel actually drives returns.</p>
     </div>
-    <div class="qcat">
-      <div class="qcat-head"><h4>EPOS &amp; margin</h4><span>trading, labour and the P&amp;L</span></div>
-      <div class="ask-list">
-        <p>"What's average spend per cover by site, trending against last quarter?"</p>
-        <p>"Break down revenue by payment type across all four sites this month."</p>
-        <p>"Show me void and discount rates by site and by staff member. Where's the biggest gap?"</p>
-        <p>"What are our busiest hours and days by site, and does that line up with how we've rota'd labour?"</p>
-        <p>"Which dishes are high volume but low margin, and which are the reverse?"</p>
-      </div>
+    <div class="dept-card">
+      <h4>Operations</h4>
+      <div class="chips"><span class="chip">Toast</span><span class="chip">Lightspeed</span><span class="chip">Square</span><span class="chip">Labour tools</span></div>
+      <p class="dept-q">Sales by hour, covers, voids, discounts and busiest periods.</p>
     </div>
+    <div class="dept-card">
+      <h4>People / HR</h4>
+      <div class="chips"><span class="chip">BrightHR</span><span class="chip">Harri</span><span class="chip">Planday</span><span class="chip">Fourth</span></div>
+      <p class="dept-q">Headcount, turnover, attrition, probation, and contracted versus actual hours.</p>
+    </div>
+    <div class="dept-card">
+      <h4>Supply Chain / Purchasing</h4>
+      <div class="chips"><span class="chip">Marketman</span><span class="chip">Apicbase</span><span class="chip">Supplier invoices</span></div>
+      <p class="dept-q">Price rises, waste percentage, COGS trending and over-ordering versus covers.</p>
+    </div>
+    <div class="dept-card">
+      <h4>General Managers</h4>
+      <div class="chips"><span class="chip">All sources</span><span class="chip">WhatsApp</span></div>
+      <p class="dept-q">Everything above, pushed at 7am: "How did my site do yesterday?" No login, no dashboard.</p>
+    </div>
+    <div class="dept-card">
+      <h4>Events &amp; Bookings</h4>
+      <div class="chips"><span class="chip">SevenRooms</span><span class="chip">Collins</span><span class="chip">DesignMyNight</span><span class="chip">OpenTable</span></div>
+      <p class="dept-q">Upcoming covers, pre-booked revenue and no-show rates.</p>
+    </div>
+    <div class="dept-card">
+      <h4>Owners / Investors</h4>
+      <div class="chips"><span class="chip">All sources</span><span class="chip">Email</span></div>
+      <p class="dept-q">Automated weekly and monthly board packs, with no one compiling them.</p>
+    </div>
+    <div class="dept-card">
+      <h4>IT</h4>
+      <div class="chips"><span class="chip">Read-only</span><span class="chip">SOC 2 Type II</span><span class="chip">ISO 27001</span></div>
+      <p class="dept-q">A security review and sign-off, then nothing to build and nothing to maintain.</p>
+    </div>
+    <div class="dept-card">
+      <h4>Property / Expansion</h4>
+      <div class="chips"><span class="chip">Google Sheets</span><span class="chip">Financial models</span><span class="chip">Xero</span></div>
+      <p class="dept-q">New-site modelling, capex tracking and break-even analysis.</p>
+    </div>
+  </div>
+  <div class="assure">
+    <span class="a-mark">✓</span>
+    <div><strong>For the FD:</strong> Milo connects read-only. Nothing is written back to your systems, nothing breaks, and nothing changes in your source data. It reads, it never edits.</div>
   </div>
 </div>
 
@@ -404,8 +434,8 @@ h1 .hl{color:var(--rust-lt)}
 
 <!-- CTA -->
 <section id="cta" class="reveal">
-  <h2 class="display">See it on Camino's own data.</h2>
-  <p class="lead">The fastest way to judge Milo is to watch it answer your questions on your own numbers. Let's scope a short proof of concept and take it from there.</p>
+  <h2 class="display">One tool for the whole company.<br>See it on Camino's own data.</h2>
+  <p class="lead">The fastest way to judge Milo is to watch it answer your questions on your own numbers, across every team. Let's scope a short proof of concept and take it from there.</p>
   <a class="cta-btn" href="mailto:liam@milo.ai?subject=Milo%20for%20Camino%20Restaurants%20%E2%80%94%20Proof%20of%20Concept">Start a proof of concept</a>
   <p class="contact-line">Liam Rabone · <a href="mailto:liam@milo.ai">liam@milo.ai</a> · July 2026</p>
   <p class="footer-mark">Milo is an Autonomous Minds product &nbsp;·&nbsp; SOC 2 Type II &nbsp;·&nbsp; ISO 27001 &nbsp;·&nbsp; GDPR</p>
