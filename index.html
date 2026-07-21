@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Milo for Camino Restaurants: Proposal</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --navy:#0c1b2a;
+  --navy-2:#112336;
+  --navy-3:#0a1622;
+  --olive:#464735;
+  --cream:#ece0d0;
+  --tan:#cab99e;
+  --paper:#f1f2ea;
+  --rust:#ad4b26;
+  --rust-lt:#c96a41;
+  --panel:rgba(236,224,208,.055);
+  --panel-line:rgba(236,224,208,.14);
+  --muted:rgba(236,224,208,.6);
+  --dim:rgba(236,224,208,.38);
+  --good:#7fa87a;
+}
+
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:'Effra','Avenir Next',system-ui,-apple-system,sans-serif;background:var(--navy);color:var(--cream);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.display{font-family:'Modesto Condensed','Bodoni 72 Condensed','Bodoni 72','Playfair Display',Georgia,serif}
+
+@keyframes drift{0%{transform:translateY(0) translateX(0);opacity:0}8%{opacity:.6}90%{opacity:.25}100%{transform:translateY(-110vh) translateX(var(--dx));opacity:0}}
+@keyframes wordBlur{from{opacity:0;transform:translateY(30px);filter:blur(10px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes barGrow{from{width:0}to{width:var(--w)}}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes typeDot{0%,80%,100%{transform:scale(0);opacity:.3}40%{transform:scale(1);opacity:1}}
+@keyframes emberGlow{0%,100%{opacity:.45}50%{opacity:.85}}
+
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1)}
+.reveal.on{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+
+/* HERO */
+#hero{position:relative;min-height:86vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:56px 40px 72px;overflow:hidden;
+  background:radial-gradient(ellipse 70% 60% at 50% 108%,rgba(173,75,38,.22) 0%,transparent 62%),radial-gradient(ellipse 60% 50% at 12% 0%,rgba(70,71,53,.35) 0%,transparent 60%)}
+#embers{position:absolute;inset:0;pointer-events:none;z-index:0}
+.ember{position:absolute;border-radius:50%;animation:drift var(--dur) var(--delay) infinite ease-in}
+.lockup{position:relative;z-index:2;width:100%;max-width:900px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:56px}
+.milo-mark{font-size:1.75rem;font-weight:700;letter-spacing:-.02em;line-height:1;background:linear-gradient(90deg,#5BC8F5,#7B5CF5);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lockup-x{color:var(--dim);font-size:1.1rem;flex-shrink:0}
+.lockup-left{display:flex;align-items:center;gap:18px}
+.camino-logo{height:56px;width:auto;display:block}
+.nav-pill{border:1px solid rgba(173,75,38,.45);border-radius:999px;padding:5px 14px;font-size:.7rem;font-weight:600;color:var(--tan);white-space:nowrap}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:840px}
+h1{font-size:clamp(2.4rem,5.4vw,4rem);font-weight:400;line-height:1.04;letter-spacing:.005em;margin-bottom:20px;text-wrap:balance}
+h1 .w{display:inline-block;margin-right:.22em;opacity:0;animation:wordBlur .8s cubic-bezier(.16,1,.3,1) both}
+h1 .hl{color:var(--rust-lt)}
+.hero-sub{font-size:1.02rem;color:var(--muted);max-width:640px;margin:0 auto;line-height:1.75;opacity:0;animation:fadeUp .7s 1.4s cubic-bezier(.16,1,.3,1) both}
+
+/* TICKER */
+.ticker-wrap{background:var(--navy-3);border-top:1px solid rgba(173,75,38,.22);border-bottom:1px solid rgba(173,75,38,.22);padding:12px 0;overflow:hidden}
+.ticker-track{display:flex;white-space:nowrap;animation:ticker 34s linear infinite}
+.ticker-track:hover{animation-play-state:paused}
+.ticker-item{display:inline-flex;align-items:center;gap:9px;padding:0 26px;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:var(--dim)}
+.t-dot{width:5px;height:5px;border-radius:50%;background:var(--rust);flex-shrink:0}
+
+/* SECTIONS */
+.section{padding:76px 60px;max-width:900px;margin:0 auto}
+.sec-label{font-size:.66rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--rust-lt);margin-bottom:10px}
+.sec-title{font-size:clamp(1.7rem,3.2vw,2.3rem);font-weight:400;line-height:1.15;margin-bottom:12px;text-wrap:balance}
+.sec-sub{font-size:.95rem;color:var(--muted);max-width:660px;line-height:1.75;margin-bottom:34px}
+
+/* LEAD PANEL */
+.lead-panel{background:rgba(70,71,53,.22);border:1px solid var(--panel-line);border-left:3px solid var(--rust);border-radius:14px;padding:26px 30px}
+.lead-panel p{font-size:1rem;color:var(--cream);line-height:1.8}
+.lead-panel p+p{margin-top:12px}
+.lead-panel strong{color:var(--paper);font-weight:600}
+
+/* FEATURE GRID */
+.feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.feat-card{background:var(--panel);border:1px solid var(--panel-line);border-radius:14px;padding:26px 24px;transition:transform .2s,border-color .2s}
+.feat-card:hover{transform:translateY(-3px);border-color:rgba(173,75,38,.4)}
+.feat-num{font-size:.64rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--rust-lt);margin-bottom:12px}
+.feat-card h4{font-size:1rem;font-weight:600;margin-bottom:8px;color:var(--paper)}
+.feat-card p{font-size:.85rem;color:var(--muted);line-height:1.7}
+
+/* QUERY GROUPS */
+.qgroup{display:grid;gap:16px}
+.qcat{background:rgba(70,71,53,.22);border:1px solid var(--panel-line);border-radius:14px;padding:24px 26px}
+.qcat-head{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.qcat-head h4{font-size:1.02rem;font-weight:600;color:var(--paper)}
+.qcat-head span{font-size:.72rem;color:var(--tan);font-weight:500}
+.ask-list{border-left:2px solid rgba(173,75,38,.5);padding-left:20px;display:flex;flex-direction:column;gap:11px}
+.ask-list p{font-size:.96rem;font-weight:400;color:var(--cream);line-height:1.5;font-style:italic}
+
+/* DEMO */
+#demo{padding:0 0 76px}
+.demo-head{max-width:900px;margin:0 auto;padding:76px 60px 34px;text-align:center}
+.demo-head .sec-sub{margin-left:auto;margin-right:auto}
+.demo-inner{max-width:900px;margin:0 auto;padding:0 60px}
+.chat-win{background:var(--paper);border-radius:16px;overflow:hidden;max-width:700px;margin:0 auto;box-shadow:0 40px 100px rgba(0,0,0,.55),0 0 0 1px rgba(236,224,208,.12)}
+.chat-bar{background:#e2e2d6;padding:10px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #d3d3c4}
+.cdot{width:10px;height:10px;border-radius:50%}
+.chat-bar-label{font-size:.75rem;font-weight:600;color:#3a3a2e;margin-left:4px;flex:1}
+.live-badge{background:rgba(173,75,38,.15);border-radius:4px;padding:2px 8px;font-size:.65rem;color:#ad4b26;font-weight:700;letter-spacing:.06em}
+.chat-tabs{padding:11px 12px 9px;display:flex;gap:7px;flex-wrap:wrap;background:var(--paper);border-bottom:1px solid #e0e0d3}
+.c-tab{background:#e4e4d7;color:#464735;border:none;border-radius:18px;padding:5px 13px;font-size:.67rem;font-weight:700;cursor:pointer;letter-spacing:.06em;transition:background .15s,color .15s,transform .1s;font-family:inherit}
+.c-tab:hover{background:#d8d8c8}
+.c-tab:active{transform:scale(.95)}
+.c-tab.on{background:#464735;color:var(--paper)}
+.c-tab:focus-visible{outline:2px solid var(--rust);outline-offset:2px}
+.chat-msgs{padding:14px;min-height:230px;max-height:380px;overflow-y:auto;background:var(--paper)}
+.msg{margin-bottom:11px;animation:msgIn .3s cubic-bezier(.16,1,.3,1) both}
+.msg-u{display:flex;justify-content:flex-end}
+.msg-u .bub{background:#464735;color:var(--paper);border-radius:14px 14px 3px 14px;padding:9px 14px;font-size:.82rem;max-width:86%;line-height:1.55}
+.msg-m{display:flex;gap:9px;align-items:flex-start}
+.av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#5BC8F5,#7B5CF5);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;color:#fff}
+.msg-m .bub{background:#fbfbf5;border:1px solid #e0e0d3;border-radius:3px 14px 14px 14px;padding:11px 14px;font-size:.82rem;max-width:88%;color:#2a2a22;line-height:1.65}
+.typing{display:flex;align-items:center;gap:4px;padding:9px 12px}
+.td{width:7px;height:7px;border-radius:50%;background:#a8a897}
+.td:nth-child(1){animation:typeDot 1.2s 0s infinite}
+.td:nth-child(2){animation:typeDot 1.2s .2s infinite}
+.td:nth-child(3){animation:typeDot 1.2s .4s infinite}
+.bar-row{display:flex;align-items:center;gap:9px;margin-bottom:7px;font-size:.74rem;font-variant-numeric:tabular-nums}
+.b-label{width:132px;flex-shrink:0;color:#464735;font-weight:600;text-align:right;font-size:.71rem;line-height:1.3}
+.b-track{flex:1;background:#e4e4d7;border-radius:4px;height:17px;overflow:hidden}
+.b-fill{height:100%;border-radius:4px;width:var(--w);animation:barGrow .55s cubic-bezier(.16,1,.3,1) both}
+.b-fill.pos{background:linear-gradient(90deg,#6e7a55,#8fa06b)}
+.b-fill.neg{background:linear-gradient(90deg,#ad4b26,#c96a41)}
+.b-delta{width:56px;flex-shrink:0;font-size:.7rem;font-weight:700;font-variant-numeric:tabular-nums}
+.b-delta.p{color:#5f7a4a}.b-delta.n{color:#ad4b26}
+.chat-foot{padding:9px 13px;background:var(--paper);border-top:1px solid #e0e0d3;display:flex;align-items:center;gap:8px}
+.chat-inp{flex:1;background:#e9e9dd;border-radius:20px;border:1px solid #dcdccd;padding:7px 14px;font-size:.78rem;color:#8a8a78}
+.send-btn{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#5BC8F5,#7B5CF5);border:none;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.send-btn svg{width:13px;height:13px}
+.demo-note{max-width:700px;margin:14px auto 0;font-size:.72rem;color:var(--dim);text-align:center;line-height:1.6}
+
+/* DELIVERY */
+.delivery{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.d-card{background:var(--panel);border:1px solid var(--panel-line);border-radius:12px;padding:18px 20px}
+.d-card h5{font-size:.88rem;font-weight:600;color:var(--paper);margin-bottom:4px;display:flex;align-items:center;gap:9px}
+.d-dot{width:8px;height:8px;border-radius:50%;background:var(--rust);flex-shrink:0;animation:emberGlow 3s ease-in-out infinite}
+.d-card p{font-size:.81rem;color:var(--muted);line-height:1.6}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;counter-reset:step}
+.step{background:var(--panel);border:1px solid var(--panel-line);border-radius:14px;padding:24px 22px;position:relative}
+.step-num{font-family:'Modesto Condensed','Bodoni 72 Condensed',Georgia,serif;font-size:2rem;font-weight:600;color:var(--rust-lt);line-height:1;margin-bottom:12px}
+.step h4{font-size:.95rem;font-weight:600;color:var(--paper);margin-bottom:7px}
+.step p{font-size:.81rem;color:var(--muted);line-height:1.6}
+
+/* TRUST */
+#trust{background:linear-gradient(180deg,var(--navy) 0%,var(--navy-3) 100%);border-top:1px solid var(--panel-line);border-bottom:1px solid var(--panel-line)}
+.cert-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 30px;background:linear-gradient(150deg,rgba(173,75,38,.16),rgba(173,75,38,.04));border:1px solid rgba(173,75,38,.42);border-radius:16px;padding:14px 28px;margin-bottom:26px}
+.cert{display:flex;align-items:flex-start;gap:12px;padding:15px 0;border-top:1px solid rgba(236,224,208,.1);font-size:.9rem}
+.cert-grid .cert:nth-child(1),.cert-grid .cert:nth-child(2){border-top:none}
+.cert .mark{width:21px;height:21px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.64rem;font-weight:800;margin-top:1px;background:rgba(127,168,122,.2);color:#8fa06b;border:1px solid rgba(127,168,122,.5)}
+.cert .ct{line-height:1.4}
+.cert .ct strong{color:var(--paper);font-weight:600;display:block;margin-bottom:2px}
+.cert .ct span{color:var(--muted);font-size:.79rem}
+.trust-cta{display:flex;align-items:center;gap:18px;flex-wrap:wrap;background:var(--navy-2);border:1px solid var(--panel-line);border-radius:14px;padding:20px 24px}
+.trust-cta-txt{flex:1;min-width:220px}
+.trust-cta-txt strong{color:var(--paper);font-weight:600;font-size:.95rem}
+.trust-cta-txt p{font-size:.82rem;color:var(--muted);margin-top:3px}
+.trust-btn{display:inline-flex;align-items:center;gap:9px;background:var(--rust);color:var(--paper);border-radius:999px;padding:12px 26px;font-size:.88rem;font-weight:600;text-decoration:none;white-space:nowrap;transition:background .18s,transform .18s}
+.trust-btn:hover{background:var(--rust-lt);transform:scale(1.03)}
+.trust-btn:focus-visible{outline:2px solid var(--tan);outline-offset:3px}
+
+/* NEXT STEPS */
+.ns-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.ns-col h3{font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:9px}
+.ns-col.milo h3{color:var(--rust-lt)}
+.ns-col.camino h3{color:var(--tan)}
+.ns-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.milo .ns-dot{background:var(--rust)}
+.camino .ns-dot{background:var(--tan)}
+.ns-item{display:flex;gap:11px;align-items:flex-start;padding:13px 15px;border-radius:10px;margin-bottom:9px;background:var(--panel);border:1px solid var(--panel-line)}
+.ns-item:last-child{margin-bottom:0}
+.ns-check{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;flex-shrink:0;margin-top:2px}
+.milo .ns-check{background:var(--rust);color:var(--paper)}
+.camino .ns-check{background:var(--tan);color:var(--navy)}
+.ns-item p{font-size:.84rem;color:var(--muted);line-height:1.6}
+.ns-item strong{color:var(--paper);font-weight:600}
+
+/* CTA */
+#cta{padding:88px 60px 72px;text-align:center;background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(173,75,38,.2) 0%,transparent 66%);border-top:1px solid var(--panel-line)}
+#cta h2{font-size:clamp(1.8rem,3.6vw,2.7rem);font-weight:400;margin-bottom:16px;line-height:1.15;text-wrap:balance}
+#cta p.lead{font-size:.97rem;color:var(--muted);max-width:560px;margin:0 auto 34px;line-height:1.75}
+.cta-btn{display:inline-block;background:var(--rust);color:var(--paper);border:none;border-radius:999px;padding:14px 38px;font-size:.95rem;font-weight:600;text-decoration:none;font-family:inherit;transition:background .18s,transform .18s;margin-bottom:34px}
+.cta-btn:hover{background:var(--rust-lt);transform:scale(1.03)}
+.cta-btn:focus-visible{outline:2px solid var(--tan);outline-offset:4px}
+.contact-line{font-size:.83rem;color:var(--dim)}
+.contact-line a{color:var(--cream);font-weight:600}
+.footer-mark{margin-top:12px;font-size:.7rem;color:rgba(236,224,208,.25);letter-spacing:.06em}
+
+@media(max-width:760px){
+  #hero{padding:36px 24px 56px;min-height:auto}
+  .section,.demo-inner,.demo-head,#cta{padding-left:24px;padding-right:24px}
+  .lockup{flex-direction:column;align-items:flex-start;gap:16px;padding-bottom:40px}
+  .feat-grid,.delivery,.ns-grid,.cert-grid,.steps{grid-template-columns:1fr}
+  .cert-grid .cert:nth-child(2){border-top:1px solid rgba(236,224,208,.1)}
+  h1{font-size:2.2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section id="hero">
+  <div id="embers"></div>
+  <div class="lockup">
+    <div class="lockup-left">
+      <span class="milo-mark">Milo</span>
+      <span class="lockup-x">×</span>
+      <img class="camino-logo" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI3LjYuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCAxNTQuNSAxMTAuNyIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMTU0LjUgMTEwLjc7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4KCS5zdDB7Y2xpcC1wYXRoOnVybCgjU1ZHSURfMDAwMDAwMjU0MzQ4OTk4NjM5OTM1NDQ2NDAwMDAwMTYwNzY3MjQ0MzQyODkwMjU3MDVfKTtmaWxsOiNlY2UwZDA7fQoJLnN0MXtmaWxsOiNlY2UwZDA7fQo8L3N0eWxlPgo8Zz4KCTxnPgoJCTxkZWZzPgoJCQk8cmVjdCBpZD0iU1ZHSURfMV8iIHg9Ii00MC4yIiB5PSI0IiB3aWR0aD0iMjM0LjgiIGhlaWdodD0iMTAyLjciLz4KCQk8L2RlZnM+CgkJPGNsaXBQYXRoIGlkPSJTVkdJRF8wMDAwMDA3NDQyMzkyNzY3NzA0OTM0NDQyMDAwMDAxMzgxMDM5NDE0MDA2NDMwMDk0NV8iPgoJCQk8dXNlIHhsaW5rOmhyZWY9IiNTVkdJRF8xXyIgIHN0eWxlPSJvdmVyZmxvdzp2aXNpYmxlOyIvPgoJCTwvY2xpcFBhdGg+CgkJPHBhdGggc3R5bGU9ImNsaXAtcGF0aDp1cmwoI1NWR0lEXzAwMDAwMDc0NDIzOTI3Njc3MDQ5MzQ0NDIwMDAwMDEzODEwMzk0MTQwMDY0MzAwOTQ1Xyk7ZmlsbDojZWNlMGQwOyIgZD0iTTE4LjQsOTMuMgoJCQljLTAuMiwwLTAuNCwwLjEtMC41LDAuMmMtMC4yLDAuMS0wLjIsMC4zLTAuMiwwLjVjMCwwLjIsMC4xLDAuNCwwLjIsMC41YzAuMSwwLjEsMC4zLDAuMiwwLjUsMC4yYzAuMiwwLDAuNC0wLjEsMC41LTAuMgoJCQljMC4xLTAuMSwwLjItMC4zLDAuMi0wLjVjMC0wLjItMC4xLTAuNC0wLjItMC41QzE4LjgsOTMuMywxOC42LDkzLjIsMTguNCw5My4yIi8+CgkJPHBvbHlnb24gc3R5bGU9ImNsaXAtcGF0aDp1cmwoI1NWR0lEXzAwMDAwMDc0NDIzOTI3Njc3MDQ5MzQ0NDIwMDAwMDEzODEwMzk0MTQwMDY0MzAwOTQ1Xyk7ZmlsbDojZWNlMGQwOyIgcG9pbnRzPSIyNC43LDEwMS43IAoJCQkyMy42LDkzLjIgMjIuNCw5My4yIDI0LDEwNC4zIDI1LjQsMTA0LjMgMjcuMiw5My4yIDI2LDkzLjIgCQkiLz4KCQk8cGF0aCBzdHlsZT0iY2xpcC1wYXRoOnVybCgjU1ZHSURfMDAwMDAwNzQ0MjM5Mjc2NzcwNDkzNDQ0MjAwMDAwMTM4MTAzOTQxNDAwNjQzMDA5NDVfKTtmaWxsOiNlY2UwZDA7IiBkPSJNMzMuNCw5My4yaC0xLjQKCQkJYy0xLDAtMS40LDAuNS0xLjQsMS40djkuN2gxLjN2LTUuMWgxLjd2NS4xaDEuM3YtOS43QzM0LjgsOTMuNywzNC40LDkzLjIsMzMuNCw5My4yIE0zMy42LDk4aC0xLjd2LTMuNWgxLjdWOTh6Ii8+CgkJPHBhdGggc3R5bGU9ImNsaXAtcGF0aDp1cmwoI1NWR0lEXzAwMDAwMDc0NDIzOTI3Njc3MDQ5MzQ0NDIwMDAwMDEzODEwMzk0MTQwMDY0MzAwOTQ1Xyk7ZmlsbDojZWNlMGQwOyIgZD0iTTQ0LjQsOTMuMmgtNS43djExLjEKCQkJaDEuM3YtOS45aDEuN3Y5LjloMS4zdi05LjloMS43djkuOWgxLjN2LTkuN0M0NS44LDkzLjcsNDUuNCw5My4yLDQ0LjQsOTMuMiIvPgoJCTxwYXRoIHN0eWxlPSJjbGlwLXBhdGg6dXJsKCNTVkdJRF8wMDAwMDA3NDQyMzkyNzY3NzA0OTM0NDQyMDAwMDAxMzgxMDM5NDE0MDA2NDMwMDk0NV8pO2ZpbGw6I2VjZTBkMDsiIGQ9Ik01Mi40LDkzLjJoLTEuNAoJCQljLTEsMC0xLjQsMC41LTEuNCwxLjR2OC4zYzAsMSwwLjUsMS40LDEuNCwxLjRoMS40YzEsMCwxLjQtMC41LDEuNC0xLjR2LTguM0M1My45LDkzLjcsNTMuNCw5My4yLDUyLjQsOTMuMiBNNTIuNiwxMDMuMWgtMS43CgkJCXYtOC42aDEuN1YxMDMuMXoiLz4KCQk8cGF0aCBzdHlsZT0iY2xpcC1wYXRoOnVybCgjU1ZHSURfMDAwMDAwNzQ0MjM5Mjc2NzcwNDkzNDQ0MjAwMDAwMTM4MTAzOTQxNDAwNjQzMDA5NDVfKTtmaWxsOiNlY2UwZDA7IiBkPSJNNjAuNSw5My4yaC0xLjQKCQkJYy0xLDAtMS40LDAuNS0xLjQsMS40djIuN2MwLDAuNiwwLjEsMSwwLjIsMS4yYzAuMSwwLjIsMC4zLDAuNCwwLjYsMC41bDEuOSwwLjdjMC4xLDAuMSwwLjIsMC4xLDAuMywwLjJjMCwwLjEsMC4xLDAuMiwwLjEsMC41CgkJCXYyLjdINTl2LTIuN2gtMS4zdjIuNWMwLDEsMC41LDEuNCwxLjQsMS40aDEuNGMxLDAsMS40LTAuNSwxLjQtMS40di0yLjdjMC0wLjUsMC0wLjgtMC4yLTFjLTAuMS0wLjItMC4zLTAuNC0wLjctMC41bC0xLjctMC42CgkJCUM1OS4yLDk4LDU5LjEsOTgsNTksOTcuOWMwLTAuMS0wLjEtMC4yLTAuMS0wLjV2LTIuOWgxLjd2Mi43aDEuM3YtMi42QzYxLjksOTMuNyw2MS40LDkzLjIsNjAuNSw5My4yIi8+CgkJPHBhdGggc3R5bGU9ImNsaXAtcGF0aDp1cmwoI1NWR0lEXzAwMDAwMDc0NDIzOTI3Njc3MDQ5MzQ0NDIwMDAwMDEzODEwMzk0MTQwMDY0MzAwOTQ1Xyk7ZmlsbDojZWNlMGQwOyIgZD0iTTczLDkzLjJoLTIuOHYxMS4xSDczCgkJCWMxLDAsMS40LTAuNSwxLjQtMS40di04LjNDNzQuNCw5My43LDc0LDkzLjIsNzMsOTMuMiBNNzMuMiwxMDMuMWgtMS43di04LjZoMS43VjEwMy4xeiIvPgoJCTxwb2x5Z29uIHN0eWxlPSJjbGlwLXBhdGg6dXJsKCNTVkdJRF8wMDAwMDA3NDQyMzkyNzY3NzA0OTM0NDQyMDAwMDAxMzgxMDM5NDE0MDA2NDMwMDk0NV8pO2ZpbGw6I2VjZTBkMDsiIHBvaW50cz0iNzkuNSw5NC40IAoJCQk4MS40LDk0LjQgODEuNCw5My4yIDc4LjMsOTMuMiA3OC4zLDEwNC4zIDgxLjQsMTA0LjMgODEuNCwxMDMuMSA3OS41LDEwMy4xIDc5LjUsOTkuMiA4MS40LDk5LjIgODEuNCw5OCA3OS41LDk4IAkJIi8+CgkJPHBvbHlnb24gc3R5bGU9ImNsaXAtcGF0aDp1cmwoI1NWR0lEXzAwMDAwMDc0NDIzOTI3Njc3MDQ5MzQ0NDIwMDAwMDEzODEwMzk0MTQwMDY0MzAwOTQ1Xyk7ZmlsbDojZWNlMGQwOyIgcG9pbnRzPSI4OS4xLDk0LjQgCgkJCTkwLjQsOTQuNCA5MC40LDEwNC4zIDkxLjcsMTA0LjMgOTEuNyw5NC40IDkzLDk0LjQgOTMsOTMuMiA4OS4xLDkzLjIgCQkiLz4KCQk8cGF0aCBzdHlsZT0iY2xpcC1wYXRoOnVybCgjU1ZHSURfMDAwMDAwNzQ0MjM5Mjc2NzcwNDkzNDQ0MjAwMDAwMTM4MTAzOTQxNDAwNjQzMDA5NDVfKTtmaWxsOiNlY2UwZDA7IiBkPSJNOTkuNCw5My4ySDk4CgkJCWMtMSwwLTEuNCwwLjUtMS40LDEuNHY5LjdoMS4zdi01LjFoMS43djUuMWgxLjN2LTkuN0MxMDAuOCw5My43LDEwMC4zLDkzLjIsOTkuNCw5My4yIE05OS41LDk4aC0xLjd2LTMuNWgxLjdWOTh6Ii8+CgkJPHBhdGggc3R5bGU9ImNsaXAtcGF0aDp1cmwoI1NWR0lEXzAwMDAwMDc0NDIzOTI3Njc3MDQ5MzQ0NDIwMDAwMDEzODEwMzk0MTQwMDY0MzAwOTQ1Xyk7ZmlsbDojZWNlMGQwOyIgZD0iTTEwNy40LDkzLjJoLTIuOHYxMS4xCgkJCWgxLjN2LTUuMWgxLjVjMSwwLDEuNC0wLjUsMS40LTEuNHYtMy4yQzEwOC44LDkzLjcsMTA4LjQsOTMuMiwxMDcuNCw5My4yIE0xMDcuNiw5OGgtMS43di0zLjVoMS43Vjk4eiIvPgoJCTxwYXRoIHN0eWxlPSJjbGlwLXBhdGg6dXJsKCNTVkdJRF8wMDAwMDA3NDQyMzkyNzY3NzA0OTM0NDQyMDAwMDAxMzgxMDM5NDE0MDA2NDMwMDk0NV8pO2ZpbGw6I2VjZTBkMDsiIGQ9Ik0xMTUuNCw5My4ySDExNAoJCQljLTEsMC0xLjQsMC41LTEuNCwxLjR2OS43aDEuM3YtNS4xaDEuN3Y1LjFoMS4zdi05LjdDMTE2LjgsOTMuNywxMTYuMyw5My4yLDExNS40LDkzLjIgTTExNS42LDk4aC0xLjd2LTMuNWgxLjdWOTh6Ii8+CgkJPHBhdGggc3R5bGU9ImNsaXAtcGF0aDp1cmwoI1NWR0lEXzAwMDAwMDc0NDIzOTI3Njc3MDQ5MzQ0NDIwMDAwMDEzODEwMzk0MTQwMDY0MzAwOTQ1Xyk7ZmlsbDojZWNlMGQwOyIgZD0iTTEyMy40LDkzLjJoLTEuNAoJCQljLTEsMC0xLjQsMC41LTEuNCwxLjR2Mi43YzAsMC42LDAsMSwwLjEsMS4yYzAuMSwwLjIsMC4zLDAuNCwwLjYsMC41bDEuOSwwLjdjMC4xLDAuMSwwLjIsMC4xLDAuMywwLjJjMCwwLjEsMCwwLjIsMCwwLjV2Mi43CgkJCWgtMS43di0yLjdoLTEuM3YyLjVjMCwxLDAuNSwxLjQsMS40LDEuNGgxLjRjMSwwLDEuNC0wLjUsMS40LTEuNHYtMi43YzAtMC41LDAtMC44LTAuMi0xYy0wLjEtMC4yLTAuMy0wLjQtMC43LTAuNWwtMS43LTAuNgoJCQljLTAuMi0wLjEtMC4zLTAuMS0wLjMtMC4yYzAtMC4xLTAuMS0wLjItMC4xLTAuNXYtMi45aDEuN3YyLjdoMS4zdi0yLjZDMTI0LjksOTMuNywxMjQuNCw5My4yLDEyMy40LDkzLjIiLz4KCQk8cG9seWdvbiBzdHlsZT0iY2xpcC1wYXRoOnVybCgjU1ZHSURfMDAwMDAwNzQ0MjM5Mjc2NzcwNDkzNDQ0MjAwMDAwMTM4MTAzOTQxNDAwNjQzMDA5NDVfKTtmaWxsOiNlY2UwZDA7IiBwb2ludHM9IjEyOS44LDEwMS42IAoJCQkxMzAsOTIuMiAxMjguNyw5Mi4yIDEyOC45LDEwMS42IAkJIi8+CgkJPHBhdGggc3R5bGU9ImNsaXAtcGF0aDp1cmwoI1NWR0lEXzAwMDAwMDc0NDIzOTI3Njc3MDQ5MzQ0NDIwMDAwMDEzODEwMzk0MTQwMDY0MzAwOTQ1Xyk7ZmlsbDojZWNlMGQwOyIgZD0iTTEyOS4zLDEwMwoJCQljLTAuMiwwLTAuNCwwLjEtMC41LDAuMmMtMC4xLDAuMS0wLjIsMC4zLTAuMiwwLjVjMCwwLjIsMC4xLDAuNCwwLjIsMC41YzAuMSwwLjIsMC4zLDAuMiwwLjUsMC4yYzAuMiwwLDAuNC0wLjEsMC41LTAuMgoJCQljMC4xLTAuMSwwLjItMC4zLDAuMi0wLjVjMC0wLjItMC4xLTAuNC0wLjItMC41QzEyOS43LDEwMywxMjkuNSwxMDMsMTI5LjMsMTAzIi8+CgkJPHBhdGggc3R5bGU9ImNsaXAtcGF0aDp1cmwoI1NWR0lEXzAwMDAwMDc0NDIzOTI3Njc3MDQ5MzQ0NDIwMDAwMDEzODEwMzk0MTQwMDY0MzAwOTQ1Xyk7ZmlsbDojZWNlMGQwOyIgZD0iTTE0MC45LDUuNwoJCQljLTMuMiwwLTYuNSwwLTkuNywwYy0zLjcsMC02LjIsMi42LTYuMiw2LjNjMCw4LjgsMCwxNy44LDAsMjYuNmMwLDguOCwwLDE4LjEsMCwyN2MwLDMuNywyLjYsNi4zLDYuMiw2LjNjMy4yLDAsNi41LDAsOS43LDAKCQkJYzMuMiwwLDYuMi0yLjQsNi4yLTYuMmMwLTE3LjcsMC0zNiwwLTUzLjdDMTQ3LjIsOC4zLDE0NC40LDUuNywxNDAuOSw1LjcgTTEzOS4yLDU2LjFjMCwxLjctMC44LDIuNC0yLjQsMi40Yy0wLjUsMC0xLjEsMC0xLjYsMAoJCQljLTEuMywwLTIuMi0wLjktMi4yLTIuMmMwLTMuMSwwLTYuMiwwLTkuMmMwLTguNiwwLTE3LjIsMC0yNS44YzAtMS42LDAuOC0yLjQsMi40LTIuNWMwLjUsMCwxLjEsMCwxLjYsMGMxLjQsMC4xLDIuMiwwLjksMi4yLDIuMwoJCQljMCw1LjksMCwxMS44LDAsMTcuNkMxMzkuMiw0NC41LDEzOS4yLDUwLjMsMTM5LjIsNTYuMSIvPgoJCTxwYXRoIHN0eWxlPSJjbGlwLXBhdGg6dXJsKCNTVkdJRF8wMDAwMDA3NDQyMzkyNzY3NzA0OTM0NDQyMDAwMDAxMzgxMDM5NDE0MDA2NDMwMDk0NV8pO2ZpbGw6I2VjZTBkMDsiIGQ9Ik0yMi44LDUxLjl2LTAuOGgtNy45CgkJCWMwLDEuOCwwLDMuNSwwLDUuM2MwLDEuMy0wLjgsMi4yLTIuMSwyLjNjLTAuNSwwLTEsMC0xLjUsMGMtMS45LDAtMi43LTAuNy0yLjctMi43VjIyLjhjMC0wLjcsMC0xLjMsMC0yYzAtMS4zLDAuOS0yLjIsMi4yLTIuMgoJCQljMC42LDAsMS4zLDAsMS45LDBjMS4yLDAsMi4yLDEsMi4yLDIuM2MwLDEuMiwwLDIuNSwwLDMuN3YxLjZoNy45di0wLjhjMC00LjYsMC05LjIsMC0xMy44YzAtMS4zLTAuMy0yLjUtMS4xLTMuNgoJCQlDMjAuOSw3LDIwLDYuNSwxOSw2LjJjLTEtMC40LTIuMS0wLjUtMy4yLTAuNUg3LjdjLTEuMSwwLTIuMSwwLjItMy4xLDAuNUM0LjEsNi40LDMuNiw2LjYsMy4yLDYuOUMxLjgsNy43LDEsOS4xLDAuNywxMC43CgkJCWMwLDAsMCwwLjEsMCwwLjJjLTAuMSwwLjMtMC4xLDAuNy0wLjEsMXY1My40YzAsMC44LDAuMSwxLjYsMC40LDIuNGMwLDAsMCwwLDAsMGMxLDIuNiwzLjIsNCw1LjgsNC4xYzMsMC4xLDYsMCw5LDAKCQkJYzAuOCwwLDEuNi0wLjEsMi40LTAuM2MyLjctMC42LDQuNi0zLjEsNC42LTUuOUMyMi44LDYxLjEsMjIuOCw1Ni41LDIyLjgsNTEuOSIvPgoJCTxwYXRoIHN0eWxlPSJjbGlwLXBhdGg6dXJsKCNTVkdJRF8wMDAwMDA3NDQyMzkyNzY3NzA0OTM0NDQyMDAwMDAxMzgxMDM5NDE0MDA2NDMwMDk0NV8pO2ZpbGw6I2VjZTBkMDsiIGQ9Ik00Mi42LDcxLjhoOS4zCgkJCWMtMC43LTUtMS40LTEwLjYtMi4xLTE1LjVjLTAuNy00LjctMS40LTkuNS0yLjEtMTQuMmMtMC42LTQuMS0xLjItOC4yLTEuNy0xMi4zYy0wLjUtMy42LTEtNy4zLTEuNi0xMC45CgkJCWMtMC42LTQuNC0xLjMtOC44LTEuOS0xMy4yaC04LjdjLTMuMSwyMS44LTYuMyw0NC4zLTkuNCw2Ni4xYzIuOSwwLDUuOCwwLDguNywwTDM1LDYyaDYuMUM0MS42LDY1LjEsNDIuMSw2OC44LDQyLjYsNzEuOAoJCQkgTTM2LDUwLjljMC43LTUuNiwxLjQtMTEuMSwyLjEtMTYuNmMwLjcsNS41LDEuMywxMS4xLDIsMTYuNkgzNnoiLz4KCQkKCQkJPHJlY3QgeD0iODQuOCIgeT0iNS43IiBzdHlsZT0iY2xpcC1wYXRoOnVybCgjU1ZHSURfMDAwMDAwNzQ0MjM5Mjc2NzcwNDkzNDQ0MjAwMDAwMTM4MTAzOTQxNDAwNjQzMDA5NDVfKTtmaWxsOiNlY2UwZDA7IiB3aWR0aD0iOSIgaGVpZ2h0PSI2Ni4xIi8+CgkJPHBhdGggc3R5bGU9ImNsaXAtcGF0aDp1cmwoI1NWR0lEXzAwMDAwMDc0NDIzOTI3Njc3MDQ5MzQ0NDIwMDAwMDEzODEwMzk0MTQwMDY0MzAwOTQ1Xyk7ZmlsbDojZWNlMGQwOyIgZD0iTTcyLjYsNTEuM3YyMC41SDgxCgkJCVY2LjRWNS45VjUuN2gtOC4ybC0wLjEsMC42YzAsMCwwLDAuMSwwLDAuMWMtMS41LDUuOS0zLjEsMTEuOS00LjYsMTcuOGMtMC4yLDAuNy0wLjQsMS4zLTAuNiwyLjJjLTAuMS0wLjQtMC4yLTAuNi0wLjItMC44CgkJCWMtMS4zLTUuNS0yLjctMTEuMS00LTE2LjZsLTAuNy0zLjJoLTguMnY2Ni4xaDguNVY1MS40bDMuOCwxMWgyLjFMNzIuNiw1MS4zeiIvPgoJCTxwb2x5Z29uIHN0eWxlPSJjbGlwLXBhdGg6dXJsKCNTVkdJRF8wMDAwMDA3NDQyMzkyNzY3NzA0OTM0NDQyMDAwMDAxMzgxMDM5NDE0MDA2NDMwMDk0NV8pO2ZpbGw6I2VjZTBkMDsiIHBvaW50cz0iMTIxLjUsNS43IAoJCQkxMTIuMyw1LjcgMTEyLjMsMjYuNiAxMDUuNCw1LjcgOTcuNSw1LjcgOTcuNSw3MS44IDEwNS44LDcxLjggMTA1LjksNTEuNyAxMTIuNiw3MS44IDExMi42LDcxLjkgMTE3LjYsNzEuOSAxMjEuNSw3MS45IAkJIi8+CgkJPHBhdGggc3R5bGU9ImNsaXAtcGF0aDp1cmwoI1NWR0lEXzAwMDAwMDc0NDIzOTI3Njc3MDQ5MzQ0NDIwMDAwMDEzODEwMzk0MTQwMDY0MzAwOTQ1Xyk7ZmlsbDojZWNlMGQwOyIgZD0iTTc0LjksODEuM0w3NC45LDgxLjMKCQkJTDc2LDgxYzAuNC0wLjUsMC4zLTAuOSwwLjUtMS41bC0wLjEtMC4xYy0wLjUsMC4zLTEsMC4yLTEuNCwwLjdMNzQuOSw4MS4zeiIvPgoJCTxwYXRoIHN0eWxlPSJjbGlwLXBhdGg6dXJsKCNTVkdJRF8wMDAwMDA3NDQyMzkyNzY3NzA0OTM0NDQyMDAwMDAxMzgxMDM5NDE0MDA2NDMwMDk0NV8pO2ZpbGw6I2VjZTBkMDsiIGQ9Ik03Mi43LDgzLjJMNzIuNyw4My4yCgkJCWwtMS4xLDAuM2MtMC40LDAuNS0wLjMsMC45LTAuNSwxLjVsMC4xLDAuMWMwLjUtMC4zLDEtMC4yLDEuNC0wLjdMNzIuNyw4My4yeiIvPgoJCTxwYXRoIHN0eWxlPSJjbGlwLXBhdGg6dXJsKCNTVkdJRF8wMDAwMDA3NDQyMzkyNzY3NzA0OTM0NDQyMDAwMDAxMzgxMDM5NDE0MDA2NDMwMDk0NV8pO2ZpbGw6I2VjZTBkMDsiIGQ9Ik03NC45LDgzLjJMNzQuOSw4My4yCgkJCWwwLjEsMS4yYzAuNCwwLjUsMC45LDAuNCwxLjQsMC43bDAuMS0wLjFjLTAuMi0wLjYtMC4xLTEtMC41LTEuNUw3NC45LDgzLjJ6Ii8+CgkJPHBhdGggc3R5bGU9ImNsaXAtcGF0aDp1cmwoI1NWR0lEXzAwMDAwMDc0NDIzOTI3Njc3MDQ5MzQ0NDIwMDAwMDEzODEwMzk0MTQwMDY0MzAwOTQ1Xyk7ZmlsbDojZWNlMGQwOyIgZD0iTTczLjksODIuOAoJCQljMC4yLDAsMC40LTAuMiwwLjUtMC40YzIuNCwwLjIsNCwxLjEsNC4xLDEuNmgwLjFjMC0wLjgtMC41LTEuMy0wLjgtMS41djBjMCwwLDAuNiwwLjMsMC44LDAuM2MwLjMsMCwwLjUtMC4zLDAuOS0wLjV2LTAuMQoJCQljLTAuNC0wLjEtMC43LTAuNC0wLjktMC40Yy0wLjIsMC0wLjgsMC4zLTAuOCwwLjN2MGMwLjMtMC4yLDAuOC0wLjcsMC44LTEuNWgtMC4xYzAsMC41LTEuNiwxLjUtNC4xLDEuNmMwLTAuMi0wLjItMC40LTAuNS0wLjUKCQkJYzAuMS0yLjUsMS4xLTQuMSwxLjYtNC4xdi0wLjFjLTAuOCwwLTEuMywwLjUtMS41LDAuOGgwYzAsMCwwLjMtMC42LDAuMy0wLjhjMC0wLjMtMC4zLTAuNS0wLjUtMC45aC0wLjEKCQkJYy0wLjEsMC40LTAuNSwwLjctMC41LDAuOWMwLDAuMiwwLjMsMC44LDAuMywwLjhoMGMtMC4yLTAuMy0wLjctMC44LTEuNS0wLjh2MC4xYzAuNSwwLDEuNSwxLjYsMS42LDQuMWMtMC4yLDAtMC40LDAuMi0wLjQsMC41CgkJCWMtMi41LTAuMS00LjEtMS4xLTQuMi0xLjZINjljMCwwLjgsMC41LDEuMywwLjgsMS41djBjMCwwLTAuNi0wLjMtMC44LTAuM2MtMC4zLDAtMC41LDAuMy0wLjksMC40djAuMWMwLjQsMC4yLDAuNywwLjUsMC45LDAuNQoJCQljMC4yLDAsMC44LTAuMywwLjgtMC4zdjBDNjkuNiw4Mi43LDY5LDgzLjIsNjksODRoMC4xYzAtMC41LDEuNy0xLjUsNC4yLTEuNmMwLDAuMiwwLjIsMC40LDAuNCwwLjVjLTAuMSwyLjUtMS4xLDQuMS0xLjYsNC4xdjAuMQoJCQljMC44LDAsMS4zLTAuNSwxLjUtMC44aDBjMCwwLTAuMywwLjYtMC4zLDAuOGMwLDAuMywwLjMsMC41LDAuNSwwLjloMC4xYzAuMi0wLjQsMC41LTAuNywwLjUtMC45YzAtMC4yLTAuMy0wLjgtMC4zLTAuOGgwCgkJCWMwLjIsMC4zLDAuNywwLjgsMS41LDAuOHYtMC4xQzc1LjEsODYuOSw3NC4xLDg1LjMsNzMuOSw4Mi44Ii8+CgkJPHBhdGggc3R5bGU9ImNsaXAtcGF0aDp1cmwoI1NWR0lEXzAwMDAwMDc0NDIzOTI3Njc3MDQ5MzQ0NDIwMDAwMDEzODEwMzk0MTQwMDY0MzAwOTQ1Xyk7ZmlsbDojZWNlMGQwOyIgZD0iTTcyLjcsODEuNEw3Mi43LDgxLjQKCQkJbC0wLjEtMS4yYy0wLjQtMC41LTAuOS0wLjQtMS40LTAuN2wtMC4xLDAuMWMwLjIsMC42LDAuMSwxLDAuNSwxLjVMNzIuNyw4MS40eiIvPgoJCTxwYXRoIHN0eWxlPSJjbGlwLXBhdGg6dXJsKCNTVkdJRF8wMDAwMDA3NDQyMzkyNzY3NzA0OTM0NDQyMDAwMDAxMzgxMDM5NDE0MDA2NDMwMDk0NV8pO2ZpbGw6I2VjZTBkMDsiIGQ9Ik02NC43LDgxLjlINTAuMgoJCQljLTAuMiwwLTAuNCwwLjItMC40LDAuNHMwLjIsMC40LDAuNCwwLjRoMTQuNGMwLjIsMCwwLjQtMC4yLDAuNC0wLjRTNjQuOSw4MS45LDY0LjcsODEuOSIvPgoJCTxwYXRoIHN0eWxlPSJjbGlwLXBhdGg6dXJsKCNTVkdJRF8wMDAwMDA3NDQyMzkyNzY3NzA0OTM0NDQyMDAwMDAxMzgxMDM5NDE0MDA2NDMwMDk0NV8pO2ZpbGw6I2VjZTBkMDsiIGQ9Ik05Ny45LDgyLjMKCQkJYzAtMC4yLTAuMi0wLjQtMC40LTAuNEg4My4xYy0wLjIsMC0wLjQsMC4yLTAuNCwwLjRjMCwwLjIsMC4yLDAuNCwwLjQsMC40aDE0LjRDOTcuNyw4Mi43LDk3LjksODIuNSw5Ny45LDgyLjMiLz4KCTwvZz4KCTxwb2x5Z29uIGNsYXNzPSJzdDEiIHBvaW50cz0iMTcuOSw5NS45IDE3LjcsMTA1LjIgMTksMTA1LjIgMTguOSw5NS45IAkiLz4KPC9nPgo8L3N2Zz4K" alt="Camino"/>
+    </div>
+    <span class="nav-pill">Proposal · July 2026</span>
+  </div>
+  <div class="hero-content">
+    <h1 class="display" id="h1"></h1>
+    <p class="hero-sub">A proposal for Camino: one platform that ties marketing spend to revenue, watches cost and margin, and answers in plain English across all four sites. Built to grow with you.</p>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap"><div class="ticker-track" id="ticker"></div></div>
+
+<!-- THE OPPORTUNITY -->
+<div class="section reveal">
+  <div class="sec-label">The Opportunity</div>
+  <div class="sec-title display">The numbers that run Camino, in one place.</div>
+  <div class="lead-panel">
+    <p>Right now the answers Camino needs live in different tools. Marketing sits in Meta, Instagram, TikTok and YouTube. Trading and labour sit in EPOS. Costs sit with suppliers and in finance. Pulling them together to answer a simple question means exports, spreadsheets and a wait.</p>
+    <p><strong>Milo brings all of it into one plain-English view.</strong> Ask a question the way you'd ask a colleague and get the number back in seconds, with marketing spend read against the covers and revenue it drove, and cost and margin watched across every site.</p>
+  </div>
+</div>
+
+<!-- WHAT MILO DELIVERS -->
+<div class="section reveal" style="padding-top:0">
+  <div class="sec-label">What Milo Delivers</div>
+  <div class="sec-title display">Built for the whole business, not one team.</div>
+  <div class="sec-sub">The capabilities that matter to a finance director: marketing proven in revenue, costs watched, and one place to ask across all of it.</div>
+  <div class="feat-grid">
+    <div class="feat-card"><div class="feat-num">Plain English</div><h4>Ask it like you'd ask a colleague</h4><p>Milo works the way Claude and ChatGPT do. You type a question and get an answer back, with no dashboards to learn and no SQL. Anyone on the team can use it from day one.</p></div>
+    <div class="feat-card"><div class="feat-num">Marketing to revenue</div><h4>Every campaign, tied to what it made</h4><p>Not likes and reach. Milo joins paid social and email spend to the covers and revenue it drove, by campaign and by site, so marketing and finance are finally looking at the same number.</p></div>
+    <div class="feat-card"><div class="feat-num">Whole business</div><h4>One view across every corner</h4><p>Marketing, EPOS, supplier costs, labour and finance in one place. Ask across all of it in a single question, instead of stitching exports together in a spreadsheet.</p></div>
+    <div class="feat-card"><div class="feat-num">Cost and margin</div><h4>COGS and margin, watched for you</h4><p>Milo flags supplier price rises, food waste and margin creep before month end, and pushes an alert the moment a site slips. The things that quietly cost money, caught early.</p></div>
+    <div class="feat-card"><div class="feat-num">Distribution</div><h4>Answers reach the people who need them</h4><p>Scheduled reports and alerts to GMs, owners and investors over Slack, WhatsApp and email. Nobody logs in, builds a report, or chases anyone for numbers.</p></div>
+    <div class="feat-card"><div class="feat-num">Assurance</div><h4>Certified, and built read-only</h4><p>SOC 2 Type II, ISO 27001 and GDPR, with read-only connections and role-based access throughout. The full picture is in the trust centre, linked below.</p></div>
+  </div>
+</div>
+
+<!-- EXAMPLE QUERIES -->
+<div class="section reveal" style="padding-top:0">
+  <div class="sec-label">One Question Away</div>
+  <div class="sec-title display">The questions Camino could ask on day one.</div>
+  <div class="sec-sub">Real examples across the business. The same plain-English box, whether it is a marketing spend question, a supplier one, or a margin one.</div>
+  <div class="qgroup">
+    <div class="qcat">
+      <div class="qcat-head"><h4>Marketing &amp; revenue</h4><span>what the spend actually returned</span></div>
+      <div class="ask-list">
+        <p>"What did we spend on Instagram and TikTok ads last month by site, and what revenue can we actually tie back to it?"</p>
+        <p>"Show me covers and revenue from the Instagram promo code against the ad spend that drove it."</p>
+        <p>"Which is giving us better return per site, TikTok or Instagram?"</p>
+        <p>"Did the flamenco night TikTok push actually move covers at Shoreditch versus Farringdon, or would we have got them anyway?"</p>
+        <p>"What's our blended acquisition cost from paid social versus our email list?"</p>
+      </div>
+    </div>
+    <div class="qcat">
+      <div class="qcat-head"><h4>Supply chain &amp; cost</h4><span>where the money quietly leaks</span></div>
+      <div class="ask-list">
+        <p>"Which supplier has put prices up the most on our top 10 ingredients this quarter?"</p>
+        <p>"What's food waste as a percentage of purchases by site this month, and which dishes are driving it?"</p>
+        <p>"Where's the gap between contracted supplier price and what we've actually been invoiced?"</p>
+        <p>"Which sites are over-ordering against covers forecast?"</p>
+        <p>"Show me COGS trending week by week by site. Who's slipping back above 25%?"</p>
+      </div>
+    </div>
+    <div class="qcat">
+      <div class="qcat-head"><h4>EPOS &amp; margin</h4><span>trading, labour and the P&amp;L</span></div>
+      <div class="ask-list">
+        <p>"What's average spend per cover by site, trending against last quarter?"</p>
+        <p>"Break down revenue by payment type across all four sites this month."</p>
+        <p>"Show me void and discount rates by site and by staff member. Where's the biggest gap?"</p>
+        <p>"What are our busiest hours and days by site, and does that line up with how we've rota'd labour?"</p>
+        <p>"Which dishes are high volume but low margin, and which are the reverse?"</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DEMO -->
+<section id="demo">
+  <div class="demo-head reveal">
+    <div class="sec-label">What It Looks Like</div>
+    <div class="sec-title display">Ask a question. Get an answer.</div>
+    <p class="sec-sub">Pick a category to see the shape of the interaction across Camino's four sites.</p>
+  </div>
+  <div class="demo-inner reveal">
+    <div class="chat-win">
+      <div class="chat-bar">
+        <div class="cdot" style="background:#ad4b26"></div>
+        <div class="cdot" style="background:#cab99e"></div>
+        <div class="cdot" style="background:#7fa87a"></div>
+        <span class="chat-bar-label">Milo · Camino Restaurants</span>
+        <span class="live-badge">Illustrative</span>
+      </div>
+      <div class="chat-tabs" id="chatTabs"></div>
+      <div class="chat-msgs" id="chatMsgs">
+        <div class="msg msg-m"><div class="av">M</div><div class="bub">Connected across marketing, EPOS, supplier costs and finance. Pick a category above to see what a typical answer looks like.</div></div>
+      </div>
+      <div class="chat-foot">
+        <div class="chat-inp">Ask Milo anything about the business…</div>
+        <button class="send-btn" aria-label="Send"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 10V2M2 6l4-4 4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+    <p class="demo-note">Figures shown are illustrative placeholders across Camino's four London sites, not Camino data.</p>
+  </div>
+</section>
+
+<!-- DELIVERY -->
+<div class="section reveal" style="padding-top:0">
+  <div class="sec-label">How It Reaches People</div>
+  <div class="sec-title display">Milo meets the team where they already are.</div>
+  <div class="sec-sub">Same data, no new logins, no adoption battle. Each group gets what is relevant to them, in the channel they already check.</div>
+  <div class="delivery">
+    <div class="d-card"><h5><span class="d-dot"></span>GMs on WhatsApp</h5><p>Their site's revenue, covers and labour, pushed on a schedule. No login, no dashboard.</p></div>
+    <div class="d-card"><h5><span class="d-dot"></span>Finance on Slack</h5><p>Ask follow-up questions in the channel and get the working shown alongside the number.</p></div>
+    <div class="d-card"><h5><span class="d-dot"></span>Owners &amp; investors by email</h5><p>Automated packs on a set cadence, without anyone compiling them by hand.</p></div>
+    <div class="d-card"><h5><span class="d-dot"></span>Head office on web &amp; desktop</h5><p>The full view for deeper digging when someone wants to go further.</p></div>
+  </div>
+</div>
+
+<!-- BUILT TO LAST -->
+<div class="section reveal" style="padding-top:0">
+  <div class="sec-label">Built to Last</div>
+  <div class="sec-title display">A platform that grows with you.</div>
+  <div class="sec-sub">This is a decision Camino should only have to make once. Milo is built to be the single place the business asks questions, for years, not a tool you outgrow.</div>
+  <div class="feat-grid">
+    <div class="feat-card"><div class="feat-num">One system</div><h4>Not a point tool</h4><p>Milo is one platform across marketing, EPOS, finance, HR and supplier data, rather than a single-purpose dashboard bolted to one part of the business. One place to learn, one place to trust.</p></div>
+    <div class="feat-card"><div class="feat-num">700+ integrations</div><h4>Already speaks your stack</h4><p>Whatever Camino uses now, and whatever you add next, Milo already connects to it. New tools plug in without a re-platforming project.</p></div>
+    <div class="feat-card"><div class="feat-num">Grows with Camino</div><h4>New sites, new channels, no rebuild</h4><p>Open a fifth site or add a new marketing channel and Milo picks it up. The platform scales with the group instead of holding it back.</p></div>
+    <div class="feat-card"><div class="feat-num">A partner</div><h4>We build it with you</h4><p>We set Milo up around how Camino actually runs, and stay close as your questions change. You get a working partnership, not a licence and a login.</p></div>
+  </div>
+</div>
+
+<!-- TRUST -->
+<section id="trust">
+  <div class="section reveal">
+    <div class="sec-label">Trust &amp; Security</div>
+    <div class="sec-title display">Certified, and built read-only.</div>
+    <div class="sec-sub">For an FD, tooling has to clear the security bar before anything else matters. Milo is independently certified, connects read-only, and every credential is documented and open for your team to review.</div>
+    <div class="cert-grid">
+      <div class="cert"><span class="mark">✓</span><span class="ct"><strong>SOC 2 Type II</strong><span>Independently audited controls over security and availability</span></span></div>
+      <div class="cert"><span class="mark">✓</span><span class="ct"><strong>ISO 27001</strong><span>Certified information security management system</span></span></div>
+      <div class="cert"><span class="mark">✓</span><span class="ct"><strong>GDPR compliant</strong><span>UK and EU data protection, built in</span></span></div>
+      <div class="cert"><span class="mark">✓</span><span class="ct"><strong>Read-only connections</strong><span>Milo reads your data and never writes back to your systems</span></span></div>
+      <div class="cert"><span class="mark">✓</span><span class="ct"><strong>Role-based access</strong><span>Each person sees only their remit, from executives to site GMs</span></span></div>
+      <div class="cert"><span class="mark">✓</span><span class="ct"><strong>Your data stays yours</strong><span>Never used to train external models</span></span></div>
+    </div>
+    <div class="trust-cta">
+      <div class="trust-cta-txt">
+        <strong>See it for yourself</strong>
+        <p>Every certification above is documented and available to your team.</p>
+      </div>
+      <a class="trust-btn" href="https://trust.milo.ai/" target="_blank" rel="noopener">View Milo's Trust Centre →</a>
+    </div>
+  </div>
+</section>
+
+<!-- GETTING STARTED -->
+<div class="section reveal">
+  <div class="sec-label">Getting Started</div>
+  <div class="sec-title display">Live in weeks, not months.</div>
+  <div class="sec-sub">A lightweight proof of concept on your own data, connected sandbox-first and read-only, so Camino can see the value before committing to anything.</div>
+  <div class="steps">
+    <div class="step"><div class="step-num">01</div><h4>Connect</h4><p>We connect your marketing, EPOS and finance sources sandbox-first and read-only. Nothing touches production, nothing is written back.</p></div>
+    <div class="step"><div class="step-num">02</div><h4>Map your language</h4><p>We label your data in Camino's own terms, so Milo answers in the words your team already uses.</p></div>
+    <div class="step"><div class="step-num">03</div><h4>Set access</h4><p>Decide who sees what. Executives get the full view, GMs get their site, everyone gets exactly what they need.</p></div>
+    <div class="step"><div class="step-num">04</div><h4>Milo works for you</h4><p>The team asks in plain English by web, Slack or WhatsApp, and the automations start landing on schedule.</p></div>
+  </div>
+</div>
+
+<!-- NEXT STEPS -->
+<div class="section reveal" style="padding-top:0">
+  <div class="sec-label">Next Steps</div>
+  <div class="sec-title display">Where we'd go from here.</div>
+  <div class="ns-grid">
+    <div class="ns-col milo">
+      <h3><span class="ns-dot"></span>Liam · Milo</h3>
+      <div class="ns-item"><div class="ns-check">✓</div><p><strong>Send the trust centre and security pack</strong> so your team can clear the security question early</p></div>
+      <div class="ns-item"><div class="ns-check">✓</div><p><strong>Scope a proof of concept</strong> on a slice of Camino's real data, marketing director and finance both in the room</p></div>
+      <div class="ns-item"><div class="ns-check">✓</div><p><strong>Bring a set of example answers</strong> mapped to the questions your board keeps asking</p></div>
+    </div>
+    <div class="ns-col camino">
+      <h3><span class="ns-dot"></span>Tyrone · Camino</h3>
+      <div class="ns-item"><div class="ns-check">✓</div><p><strong>Review the trust centre</strong> and pass the security pack to whoever signs off tooling</p></div>
+      <div class="ns-item"><div class="ns-check">✓</div><p><strong>Point us at the data sources</strong> you'd want in the proof of concept</p></div>
+      <div class="ns-item"><div class="ns-check">✓</div><p><strong>Tell us the three questions</strong> you most want answered faster, and we'll build the POC around them</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<section id="cta" class="reveal">
+  <h2 class="display">See it on Camino's own data.</h2>
+  <p class="lead">The fastest way to judge Milo is to watch it answer your questions on your own numbers. Let's scope a short proof of concept and take it from there.</p>
+  <a class="cta-btn" href="mailto:liam@milo.ai?subject=Milo%20for%20Camino%20Restaurants%20%E2%80%94%20Proof%20of%20Concept">Start a proof of concept</a>
+  <p class="contact-line">Liam Rabone · <a href="mailto:liam@milo.ai">liam@milo.ai</a> · July 2026</p>
+  <p class="footer-mark">Milo is an Autonomous Minds product &nbsp;·&nbsp; SOC 2 Type II &nbsp;·&nbsp; ISO 27001 &nbsp;·&nbsp; GDPR</p>
+</section>
+
+<script>
+(function(){
+  const c=document.getElementById('embers');
+  for(let i=0;i<32;i++){
+    const p=document.createElement('div');p.className='ember';
+    const sz=Math.random()*2.6+1;
+    const hue=Math.random()>.55?'rgba(173,75,38,.55)':Math.random()>.5?'rgba(202,185,158,.4)':'rgba(236,224,208,.2)';
+    p.style.cssText=`width:${sz}px;height:${sz}px;background:${hue};left:${Math.random()*100}%;bottom:-10px;--dur:${9+Math.random()*14}s;--delay:${Math.random()*10}s;--dx:${(Math.random()-.5)*110}px`;
+    c.appendChild(p);
+  }
+})();
+
+(function(){
+  const el=document.getElementById('h1');
+  let d=.25;
+  'The whole business,'.split(' ').forEach(w=>{
+    const s=document.createElement('span');s.className='w';s.textContent=w;
+    s.style.animationDelay=d+'s';el.appendChild(s);d+=.11;
+  });
+  el.appendChild(document.createElement('br'));
+  'in one question.'.split(' ').forEach((w,i)=>{
+    const s=document.createElement('span');s.className='w hl';s.textContent=w;
+    s.style.animationDelay=(d+.18+i*.09)+'s';el.appendChild(s);
+  });
+})();
+
+(function(){
+  const items=['One platform, whole business','Ad spend to revenue','Supplier price rises','COGS by site','Spend per cover','Plain English, no SQL','700+ integrations','Slack, WhatsApp & email','SOC 2 Type II & ISO 27001','Live in weeks'];
+  const t=document.getElementById('ticker');
+  [...items,...items].forEach(txt=>{
+    const s=document.createElement('span');s.className='ticker-item';
+    s.innerHTML='<span class="t-dot"></span>'+txt;t.appendChild(s);
+  });
+})();
+
+(function(){
+  const demos=[
+    {label:'REVENUE',
+     q:'What did we spend on paid social last month by site, and what revenue can we tie back to it?',
+     ans:'Across the four sites you spent broadly the same on paid social, but the return split widely. Shoreditch turned it into the most traceable revenue through the booking link and promo code. Monument spent in line with the others and saw very little move, which is worth a look before the next push.',
+     chart:[{l:'Shoreditch',p:92,d:'4.1x',pos:true},{l:'Farringdon',p:74,d:'3.2x',pos:true},{l:"King's Cross",p:58,d:'2.4x',pos:true},{l:'Monument',p:28,d:'0.9x',pos:false}]},
+    {label:'SUPPLY CHAIN',
+     q:'Which suppliers have pushed prices up most on our top ingredients this quarter?',
+     ans:'Three suppliers account for most of the movement. Produce is the biggest driver, up on several lines at once. Wine and dry goods are broadly flat. At current volumes that is adding a noticeable amount to COGS this quarter, concentrated at the two busiest sites.',
+     chart:[{l:'Produce',p:84,d:'+11%',pos:false},{l:'Meat &amp; fish',p:61,d:'+7%',pos:false},{l:'Dairy',p:44,d:'+4%',pos:false},{l:'Wine',p:16,d:'+1%',pos:false}]},
+    {label:'EPOS',
+     q:"What's average spend per cover by site, trending against last quarter?",
+     ans:'Spend per cover is up at three of the four sites versus last quarter, with wine and sides doing most of the lifting. King’s Cross has softened slightly, driven by a shift toward the set menu at lunch. Worth testing a sides prompt at the point of order there.',
+     chart:[{l:'Shoreditch',p:88,d:'+6%',pos:true},{l:'Farringdon',p:80,d:'+4%',pos:true},{l:'Monument',p:70,d:'+2%',pos:true},{l:"King's Cross",p:46,d:'−1%',pos:false}]},
+    {label:'AUTOMATION',
+     q:'Every Friday at 4pm, send each GM their site summary on WhatsApp.',
+     ans:'Done. Each GM will get their own site’s revenue, covers, labour percentage and paid social return for the week, every Friday at 4pm on WhatsApp. Owners and investors get the consolidated version by email at the same time. Ask any time to change the cadence or what is in it.',
+     chart:null},
+  ];
+  const tabs=document.getElementById('chatTabs');
+  const msgs=document.getElementById('chatMsgs');
+  let active=-1;
+  demos.forEach((d,i)=>{const b=document.createElement('button');b.className='c-tab';b.textContent=d.label;b.onclick=()=>run(i);tabs.appendChild(b);});
+  function run(i){
+    if(active===i)return;active=i;
+    document.querySelectorAll('.c-tab').forEach((b,j)=>b.classList.toggle('on',j===i));
+    msgs.querySelectorAll('.msg:not(:first-child)').forEach(m=>m.remove());
+    const um=document.createElement('div');um.className='msg msg-u';um.innerHTML='<div class="bub">'+esc(demos[i].q)+'</div>';msgs.appendChild(um);scroll();
+    const ty=document.createElement('div');ty.className='msg msg-m';ty.innerHTML='<div class="av">M</div><div class="bub"><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>';msgs.appendChild(ty);scroll();
+    setTimeout(()=>{
+      ty.remove();
+      const am=document.createElement('div');am.className='msg msg-m';am.innerHTML='<div class="av">M</div><div class="bub">'+esc(demos[i].ans)+'</div>';msgs.appendChild(am);
+      if(demos[i].chart){
+        const cw=document.createElement('div');cw.className='msg msg-m';cw.style.animationDelay='.1s';
+        const cv=document.createElement('div');cv.style.cssText='background:#fbfbf5;border:1px solid #e0e0d3;border-radius:3px 14px 14px 14px;padding:13px 14px;max-width:88%';
+        demos[i].chart.forEach((r,idx)=>{const row=document.createElement('div');row.className='bar-row';row.innerHTML=`<div class="b-label">${r.l}</div><div class="b-track"><div class="b-fill ${r.pos?'pos':'neg'}" style="--w:${r.p}%;animation-delay:${idx*.07}s"></div></div><div class="b-delta ${r.pos?'p':'n'}">${r.d}</div>`;cv.appendChild(row);});
+        cw.appendChild(cv);msgs.appendChild(cw);
+      }
+      scroll();
+    },1400);
+  }
+  function scroll(){setTimeout(()=>msgs.scrollTop=msgs.scrollHeight,50)}
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  let autoIdx=0;
+  function autoRun(){run(autoIdx);autoIdx=(autoIdx+1)%demos.length}
+  setTimeout(()=>{autoRun();setInterval(autoRun,6500)},1800);
+})();
+
+(function(){
+  const o=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');o.unobserve(e.target)}})},{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>o.observe(el));
+})();
+</script>
+</body>
+</html>
