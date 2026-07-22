@@ -91,6 +91,8 @@ h1 .hl{color:var(--rust-lt)}
 .vs-them{font-size:.84rem;color:var(--dim);line-height:1.5;margin-bottom:6px}
 .vs-milo{font-size:.95rem;color:var(--paper);font-weight:600;line-height:1.5}
 .vs-milo::before{content:'→ ';color:var(--rust-lt);font-weight:700}
+.qlist{display:flex;flex-direction:column;gap:11px;border-left:2px solid rgba(173,75,38,.5);padding-left:20px}
+.qlist p{font-size:.95rem;color:var(--cream);font-style:italic;line-height:1.5}
 
 /* DEPARTMENTS */
 .dept-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
@@ -246,7 +248,7 @@ h1 .hl{color:var(--rust-lt)}
   </div>
   <div class="hero-content">
     <h1 class="display" id="h1"></h1>
-    <p class="hero-sub">A proposal for Camino: one platform for the whole company, not a tool for one team. The same plain-English question box for everyone, giving different answers to different people, across all four sites. Built to grow with you.</p>
+    <p class="hero-sub">A proposal for Camino: one platform for the whole company, not a tool for one team. The same plain-English question box for everyone, giving different answers to different people, across all seven sites. Built to grow with you.</p>
   </div>
 </section>
 
@@ -282,13 +284,15 @@ h1 .hl{color:var(--rust-lt)}
 <!-- WHERE MILO PULLS AHEAD -->
 <div class="section reveal" style="padding-top:0">
   <div class="sec-label">Where Milo Pulls Ahead</div>
-  <div class="sec-title display">The difference, in four lines.</div>
+  <div class="sec-title display">The difference, in six lines.</div>
   <div class="sec-sub">Most restaurant tools do one thing for one team. Milo is built the other way round.</div>
   <div class="versus">
     <div class="vs-row"><div class="vs-them">A reviews-and-sales tool watches the front of house.</div><div class="vs-milo">Milo watches the whole P&amp;L, from ad spend to supplier costs.</div></div>
     <div class="vs-row"><div class="vs-them">A dashboard makes you go and look.</div><div class="vs-milo">Milo comes to you, on WhatsApp, Slack and email.</div></div>
     <div class="vs-row"><div class="vs-them">A point tool answers one team.</div><div class="vs-milo">Milo answers the whole company from one question box.</div></div>
     <div class="vs-row"><div class="vs-them">Most tools tell you what already happened.</div><div class="vs-milo">Milo flags what's slipping before month end.</div></div>
+    <div class="vs-row"><div class="vs-them">Some tools bolt AI on, a connector you point at an outside model.</div><div class="vs-milo">Milo is the AI itself. No separate subscription, no setup.</div></div>
+    <div class="vs-row"><div class="vs-them">A tool that sees one slice of the business calls it focus.</div><div class="vs-milo">Milo sees the whole business and joins it up. That is the point.</div></div>
   </div>
 </div>
 
@@ -355,6 +359,19 @@ h1 .hl{color:var(--rust-lt)}
   </div>
 </div>
 
+<!-- GOOGLE ECOSYSTEM -->
+<div class="section reveal" style="padding-top:0">
+  <div class="sec-label">Lives Where You Already Work</div>
+  <div class="sec-title display">Your Google stack becomes a live data source.</div>
+  <div class="sec-sub">Camino runs on Google, and that is where Milo is at home. Nothing to migrate, nothing to re-key. Your spreadsheets stay exactly where they are and become something the whole team can just ask questions of.</div>
+  <div class="feat-grid">
+    <div class="feat-card"><div class="feat-num">Sheets</div><h4>Google Sheets, live</h4><p>Milo reads and queries your spreadsheets directly and pulls live data from them. The models and trackers you already keep become answerable on day one.</p></div>
+    <div class="feat-card"><div class="feat-num">Analytics</div><h4>GA4, connected</h4><p>Ask about web traffic, referrals, conversions and campaign performance in plain English, joined to what actually happened in the restaurants.</p></div>
+    <div class="feat-card"><div class="feat-num">Ads &amp; inbox</div><h4>Google Ads and Gmail</h4><p>Tie Google Ads spend to outcomes, and let Milo read supplier invoices, booking confirmations and the things that never make it into a system.</p></div>
+    <div class="feat-card"><div class="feat-num">Upload</div><h4>Drop in any spreadsheet</h4><p>Upload any file and Milo reads it instantly, no reformatting. A supplier statement or a one-off export is answerable straight away.</p></div>
+  </div>
+</div>
+
 <!-- MARKETING DATA COMPARISON -->
 <div class="section reveal" style="padding-top:0">
   <div class="sec-label">Marketing Data</div>
@@ -413,12 +430,25 @@ h1 .hl{color:var(--rust-lt)}
   <p class="dept-q" style="margin-top:22px;font-size:.92rem;line-height:1.65">For Camino that means every marketing pound can be judged on covers and revenue, by site and by campaign. The spend that works gets more, the spend that doesn't gets cut, and the whole marketing budget starts paying its way.</p>
 </div>
 
+<!-- REGULARS -->
+<div class="section reveal" style="padding-top:0">
+  <div class="sec-label">Know Your Regulars</div>
+  <div class="sec-title display">Not just who came back. Why.</div>
+  <div class="sec-sub">You mentioned keeping an eye on regulars. Milo joins bookings, spend, demographics and the marketing that first brought them in, so retention becomes something you can act on, by site.</div>
+  <div class="qlist">
+    <p>"Which customers have booked three or more times this year, and what's their average spend?"</p>
+    <p>"Show me regulars who haven't booked in 60 days. Are we losing them?"</p>
+    <p>"What's the lifetime value of a customer who came from Instagram versus a walk-in?"</p>
+    <p>"Which postcode areas are our repeat customers coming from, by site?"</p>
+  </div>
+</div>
+
 <!-- DEMO -->
 <section id="demo">
   <div class="demo-head reveal">
     <div class="sec-label">What It Looks Like</div>
     <div class="sec-title display">Ask a question. Get an answer.</div>
-    <p class="sec-sub">Pick a category to see the shape of the interaction across Camino's four sites.</p>
+    <p class="sec-sub">Pick a category to see the shape of the interaction across Camino's sites.</p>
   </div>
   <div class="demo-inner reveal">
     <div class="chat-win">
@@ -438,7 +468,7 @@ h1 .hl{color:var(--rust-lt)}
         <button class="send-btn" aria-label="Send"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 10V2M2 6l4-4 4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </div>
     </div>
-    <p class="demo-note">Figures shown are illustrative placeholders across Camino's four London sites, not Camino data.</p>
+    <p class="demo-note">Figures shown are illustrative placeholders across a sample of Camino's London sites, not Camino data.</p>
   </div>
 </section>
 
@@ -552,7 +582,7 @@ h1 .hl{color:var(--rust-lt)}
   const demos=[
     {label:'REVENUE',
      q:'What did we spend on paid social last month by site, and what revenue can we tie back to it?',
-     ans:'Across the four sites you spent broadly the same on paid social, but the return split widely. Shoreditch turned it into the most traceable revenue through the booking link and promo code. Monument spent in line with the others and saw very little move, which is worth a look before the next push.',
+     ans:'Across your sites you spent broadly the same on paid social, but the return split widely. Shoreditch turned it into the most traceable revenue through the booking link and promo code. Monument spent in line with the others and saw very little move, which is worth a look before the next push.',
      chart:[{l:'Shoreditch',p:92,d:'4.1x',pos:true},{l:'Farringdon',p:74,d:'3.2x',pos:true},{l:"King's Cross",p:58,d:'2.4x',pos:true},{l:'Monument',p:28,d:'0.9x',pos:false}]},
     {label:'SUPPLY CHAIN',
      q:'Which suppliers have pushed prices up most on our top ingredients this quarter?',
@@ -560,7 +590,7 @@ h1 .hl{color:var(--rust-lt)}
      chart:[{l:'Produce',p:84,d:'+11%',pos:false},{l:'Meat &amp; fish',p:61,d:'+7%',pos:false},{l:'Dairy',p:44,d:'+4%',pos:false},{l:'Wine',p:16,d:'+1%',pos:false}]},
     {label:'EPOS',
      q:"What's average spend per cover by site, trending against last quarter?",
-     ans:'Spend per cover is up at three of the four sites versus last quarter, with wine and sides doing most of the lifting. King’s Cross has softened slightly, driven by a shift toward the set menu at lunch. Worth testing a sides prompt at the point of order there.',
+     ans:'Spend per cover is up at most of your sites versus last quarter, with wine and sides doing most of the lifting. King’s Cross has softened slightly, driven by a shift toward the set menu at lunch. Worth testing a sides prompt at the point of order there.',
      chart:[{l:'Shoreditch',p:88,d:'+6%',pos:true},{l:'Farringdon',p:80,d:'+4%',pos:true},{l:'Monument',p:70,d:'+2%',pos:true},{l:"King's Cross",p:46,d:'−1%',pos:false}]},
     {label:'AUTOMATION',
      q:'Every Friday at 4pm, send each GM their site summary on WhatsApp.',
