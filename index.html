@@ -85,6 +85,13 @@ h1 .hl{color:var(--rust-lt)}
 .feat-card h4{font-size:1rem;font-weight:600;margin-bottom:8px;color:var(--paper)}
 .feat-card p{font-size:.85rem;color:var(--muted);line-height:1.7}
 
+/* VERSUS */
+.versus{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.vs-row{background:var(--panel);border:1px solid var(--panel-line);border-left:3px solid var(--rust);border-radius:12px;padding:18px 20px}
+.vs-them{font-size:.84rem;color:var(--dim);line-height:1.5;margin-bottom:6px}
+.vs-milo{font-size:.95rem;color:var(--paper);font-weight:600;line-height:1.5}
+.vs-milo::before{content:'→ ';color:var(--rust-lt);font-weight:700}
+
 /* DEPARTMENTS */
 .dept-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 .dept-card{background:var(--panel);border:1px solid var(--panel-line);border-radius:14px;padding:22px 22px;transition:transform .2s,border-color .2s}
@@ -218,7 +225,7 @@ h1 .hl{color:var(--rust-lt)}
   #hero{padding:36px 24px 56px;min-height:auto}
   .section,.demo-inner,.demo-head,#cta,#video-section{padding-left:24px;padding-right:24px}
   .lockup{flex-direction:column;align-items:flex-start;gap:16px;padding-bottom:40px}
-  .feat-grid,.delivery,.ns-grid,.cert-grid,.steps,.dept-grid{grid-template-columns:1fr}
+  .feat-grid,.delivery,.ns-grid,.cert-grid,.steps,.dept-grid,.versus{grid-template-columns:1fr}
   .cert-grid .cert:nth-child(2){border-top:1px solid rgba(236,224,208,.1)}
   h1{font-size:2.2rem}
 }
@@ -269,6 +276,19 @@ h1 .hl{color:var(--rust-lt)}
     <div class="feat-card"><div class="feat-num">Cost and margin</div><h4>COGS and margin, watched for you</h4><p>Milo flags supplier price rises, food waste and margin creep before month end, and pushes an alert the moment a site slips. The things that quietly cost money, caught early.</p></div>
     <div class="feat-card"><div class="feat-num">Distribution</div><h4>Answers reach the people who need them</h4><p>Scheduled reports and alerts to GMs, owners and investors over Slack, WhatsApp and email. Nobody logs in, builds a report, or chases anyone for numbers.</p></div>
     <div class="feat-card"><div class="feat-num">Assurance</div><h4>Certified, and built read-only</h4><p>SOC 2 Type II, ISO 27001 and GDPR, with read-only connections and role-based access throughout. The full picture is in the trust centre, linked below.</p></div>
+  </div>
+</div>
+
+<!-- WHERE MILO PULLS AHEAD -->
+<div class="section reveal" style="padding-top:0">
+  <div class="sec-label">Where Milo Pulls Ahead</div>
+  <div class="sec-title display">The difference, in four lines.</div>
+  <div class="sec-sub">Most restaurant tools do one thing for one team. Milo is built the other way round.</div>
+  <div class="versus">
+    <div class="vs-row"><div class="vs-them">A reviews-and-sales tool watches the front of house.</div><div class="vs-milo">Milo watches the whole P&amp;L, from ad spend to supplier costs.</div></div>
+    <div class="vs-row"><div class="vs-them">A dashboard makes you go and look.</div><div class="vs-milo">Milo comes to you, on WhatsApp, Slack and email.</div></div>
+    <div class="vs-row"><div class="vs-them">A point tool answers one team.</div><div class="vs-milo">Milo answers the whole company from one question box.</div></div>
+    <div class="vs-row"><div class="vs-them">Most tools tell you what already happened.</div><div class="vs-milo">Milo flags what's slipping before month end.</div></div>
   </div>
 </div>
 
@@ -341,14 +361,14 @@ h1 .hl{color:var(--rust-lt)}
   <div class="sec-title display">Is the marketing actually working?</div>
   <div class="sec-sub">Reviews tell you whether customers are happy. They don't tell you whether the marketing is working. Milo connects the ad platforms a reviews-and-sales tool leaves out, and ties every pound of spend to the covers and revenue it drove. That is the line between a scoreboard and a decision.</div>
   <div class="lead-panel" style="margin-bottom:24px">
-    <p><strong>Tenzo</strong> sees what people say about you: reviews, ratings, comments.</p>
+    <p><strong>A reviews-and-sales tool</strong> sees what people say about you: reviews, ratings, comments.</p>
     <p><strong>Milo</strong> sees what people say about you, what you spent to bring them in, what it returned, and where.</p>
   </div>
   <div class="cmp-wrap"><div class="cmp-scroll">
     <table class="cmp-table">
       <thead><tr>
         <th style="width:46%">Marketing data source</th>
-        <th style="width:27%">Tenzo</th>
+        <th style="width:27%">A reviews &amp; sales tool</th>
         <th class="mc" style="width:27%">Milo</th>
       </tr></thead>
       <tbody>
@@ -391,7 +411,6 @@ h1 .hl{color:var(--rust-lt)}
     </table>
   </div></div>
   <p class="dept-q" style="margin-top:22px;font-size:.92rem;line-height:1.65">For Camino that means every marketing pound can be judged on covers and revenue, by site and by campaign. The spend that works gets more, the spend that doesn't gets cut, and the whole marketing budget starts paying its way.</p>
-  <p class="cmp-note">Comparison based on Tenzo's publicly documented integrations, as of July 2026.</p>
 </div>
 
 <!-- DEMO -->
